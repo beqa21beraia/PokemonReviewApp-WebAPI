@@ -51,7 +51,7 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("pokemon/{categoryId}")]
-        [ProducesResponseType(200, Type =typeof(IEnumerable<Pokemon>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
         [ProducesResponseType(400)]
         public IActionResult GetPokemonByCategory(int categoryId)
         {
@@ -73,7 +73,7 @@ namespace PokemonReviewApp.Controllers
                 return BadRequest(ModelState);
 
             var category = _categoryRepository.GetCategories()
-                .Where(c => c.Name.Trim().ToUpper() 
+                .Where(c => c.Name.Trim().ToUpper()
                 == newCategory.Name.Trim().ToUpper())
                 .FirstOrDefault();
 
@@ -101,7 +101,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCategory(int categoryId,  
+        public IActionResult UpdateCategory(int categoryId,
             [FromBody] CategoryDto updatedCategory)
         {
             if (updatedCategory == null)
@@ -120,8 +120,32 @@ namespace PokemonReviewApp.Controllers
 
             if (!_categoryRepository.UpdateCategory(categoryMap))
             {
-                ModelState.AddModelError("", 
+                ModelState.AddModelError("",
                     "Something went wrong while updating category");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{categoryId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCategory(int categoryId)
+        {
+            if (!_categoryRepository.CategoryExists(categoryId))
+                return NotFound();
+
+            var categoryToDelete = _categoryRepository.GetCategory(categoryId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_categoryRepository.DeleteCategory(categoryToDelete))
+            {
+                ModelState.AddModelError("", 
+                    "Something went wrong while deleting category");
                 return StatusCode(500, ModelState);
             }
 

@@ -114,7 +114,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateOwner(int reviewId,
+        public IActionResult UpdateReview(int reviewId,
             [FromBody] ReviewDto updatedReview)
         {
             if (updatedReview == null)
@@ -135,6 +135,30 @@ namespace PokemonReviewApp.Controllers
             {
                 ModelState.AddModelError("",
                     "Something went wrong while updating review");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{reviewId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteReview(int reviewId)
+        {
+            if (!_reviewRepository.ReviewExists(reviewId))
+                return NotFound();
+
+            var reviewToDelete = _reviewRepository.GetReview(reviewId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_reviewRepository.DeleteReview(reviewToDelete))
+            {
+                ModelState.AddModelError("",
+                    "Something went wrong while deleting review");
                 return StatusCode(500, ModelState);
             }
 

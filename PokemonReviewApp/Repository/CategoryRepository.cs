@@ -23,6 +23,7 @@ namespace PokemonReviewApp.Repository
             return Save();
         }
 
+
         public ICollection<Category> GetCategories()
         {
             return _dataContext.Categories.OrderBy(c => c.Id).ToList();
@@ -49,6 +50,12 @@ namespace PokemonReviewApp.Repository
         public bool UpdateCategory(Category category)
         {
             _dataContext.Update(category);
+            return Save();
+        }
+
+        public bool DeleteCategory(Category category)
+        {
+            _dataContext.Remove(category);
             return Save();
         }
     }
