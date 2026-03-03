@@ -597,6 +597,37 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewerController",
+    "Method": "CreateReviewer",
+    "RelativePath": "api/Reviewer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newReviewer",
+        "Type": "PokemonReviewApp.DTO.ReviewerDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "PokemonReviewApp.Controllers.ReviewerController",
     "Method": "GetReviewer",
     "RelativePath": "api/Reviewer/{reviewerId}",
     "HttpMethod": "GET",

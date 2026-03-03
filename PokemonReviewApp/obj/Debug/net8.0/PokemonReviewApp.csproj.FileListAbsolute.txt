@@ -146,3 +146,4 @@ D:\VS_Projects\PokemonReviewApp\PokemonReviewApp\bin\Debug\net8.0\runtimes\win\l
 D:\VS_Projects\PokemonReviewApp\PokemonReviewApp\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\VS_Projects\PokemonReviewApp\PokemonReviewApp\bin\Debug\net8.0\AutoMapper.dll
 D:\VS_Projects\PokemonReviewApp\PokemonReviewApp\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\VS_Projects\PokemonReviewApp\PokemonReviewApp\obj\Debug\net8.0\PokemonReviewApp.sourcelink.json
