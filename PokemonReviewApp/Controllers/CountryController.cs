@@ -22,62 +22,66 @@ namespace PokemonReviewApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Country>))]
-        public IActionResult GetCountries()
+        public async Task<IActionResult> GetCountriesAsync()
         {
-            var countries = _mapper.Map<ICollection<CountryDto>>(
-                _countryRepository.GetCountries());
+            var countries = await _countryRepository.GetCountriesAsync();
+
+            var countriesDto = _mapper.Map<List<CountryDto>>(countries);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(countries);
+            return Ok(countriesDto);
         }
 
         [HttpGet("{countryId}")]
         [ProducesResponseType(200, Type = typeof(Country))]
         [ProducesResponseType(400)]
-        public IActionResult GetCountry(int countryId)
+        public async Task<IActionResult> GetCountryAsync(int countryId)
         {
-            if (!_countryRepository.CountryExists(countryId))
+            if (!await _countryRepository.CountryExistsAsync(countryId))
                 return NotFound();
 
-            var country = _mapper.Map<CountryDto>(
-                _countryRepository.GetCountry(countryId));
+            var country = await _countryRepository.GetCountryAsync(countryId);
+
+            var countryDto = _mapper.Map<CountryDto>(country);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(country);
+            return Ok(countryDto);
         }
 
         [HttpGet("/owners/{ownerId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(200, Type = typeof(Country))]
-        public IActionResult GetCountryByOwner(int ownerId)
+        public async Task<IActionResult> GetCountryByOwnerAsync(int ownerId)
         {
-            var country = _mapper.Map<CountryDto>(
-                _countryRepository.GetCountryByOwner(ownerId));
+            var country = await _countryRepository.GetCountryByOwnerAsync(ownerId);
+
+            var countryDto = _mapper.Map<CountryDto>(country);
 
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            return Ok(country);
+            return Ok(countryDto);
         }
 
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateCountry([FromBody] CountryDto newCountry)
+        public async Task<IActionResult> CreateCountryAsync([FromBody] CountryDto newCountry)
         {
             if (newCountry == null)
                 return BadRequest(ModelState);
 
-            var country = _countryRepository.GetCountries()
-                .Where(c => c.Name.Trim().ToUpper()
-                == newCountry.Name.Trim().ToUpper())
+            var countries = await _countryRepository.GetCountriesAsync();
+
+            var existingCountry = countries.Where(c => 
+                c.Name.Trim().ToUpper() == newCountry.Name.Trim().ToUpper())
                 .FirstOrDefault();
 
-            if (country != null)
+            if (existingCountry != null)
             {
                 ModelState.AddModelError("", "Country already exists");
                 return StatusCode(422, ModelState);
@@ -88,7 +92,9 @@ namespace PokemonReviewApp.Controllers
 
             var newCountryMap = _mapper.Map<Country>(newCountry);
 
-            if (!_countryRepository.CreateCountry(newCountryMap))
+            var created = await _countryRepository.CreateCountryAsync(newCountryMap);
+
+            if (!created)
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
@@ -101,7 +107,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCountry(int countryId,
+        public async Task<IActionResult> UpdateCountryAsync(int countryId,
             [FromBody] CountryDto updatedCountry)
         {
             if (updatedCountry == null)
@@ -110,7 +116,7 @@ namespace PokemonReviewApp.Controllers
             if (countryId != updatedCountry.Id)
                 return BadRequest(ModelState);
 
-            if (!_countryRepository.CountryExists(countryId))
+            if (!await _countryRepository.CountryExistsAsync(countryId))
                 return NotFound();
 
             if (!ModelState.IsValid)
@@ -118,7 +124,10 @@ namespace PokemonReviewApp.Controllers
 
             var countryMap = _mapper.Map<Country>(updatedCountry);
 
-            if (!_countryRepository.UpdateCountry(countryMap))
+            var updated = await _countryRepository
+                .UpdateCountryAsync(countryMap);
+
+            if (!updated)
             {
                 ModelState.AddModelError("",
                     "Something went wrong while updating country");
@@ -132,17 +141,21 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteCountry(int countryId)
+        public async Task<IActionResult> DeleteCountryAsync(int countryId)
         {
-            if (!_countryRepository.CountryExists(countryId))
+            if (!await _countryRepository.CountryExistsAsync(countryId))
                 return NotFound();
 
-            var countryToDelete = _countryRepository.GetCountry(countryId);
+            var countryToDelete = await _countryRepository
+                .GetCountryAsync(countryId);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_countryRepository.DeleteCountry(countryToDelete))
+            var deleted = await _countryRepository.
+                DeleteCountryAsync(countryToDelete);
+
+            if (!deleted)
             {
                 ModelState.AddModelError("",
                     "Something went wrong while deleting country");

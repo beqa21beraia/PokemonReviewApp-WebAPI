@@ -52,7 +52,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.CategoryController",
-    "Method": "GetCategory",
+    "Method": "GetCategoryAsync",
     "RelativePath": "api/Category/{categoryId}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -87,7 +87,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.CategoryController",
-    "Method": "UpdateCategory",
+    "Method": "UpdateCategoryAsync",
     "RelativePath": "api/Category/{categoryId}",
     "HttpMethod": "PUT",
     "IsController": true,
@@ -132,7 +132,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.CategoryController",
-    "Method": "DeleteCategory",
+    "Method": "DeleteCategoryAsync",
     "RelativePath": "api/Category/{categoryId}",
     "HttpMethod": "DELETE",
     "IsController": true,

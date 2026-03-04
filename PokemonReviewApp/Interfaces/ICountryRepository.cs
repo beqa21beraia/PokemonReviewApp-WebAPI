@@ -1,17 +1,19 @@
-﻿using PokemonReviewApp.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using PokemonReviewApp.Models;
 
 namespace PokemonReviewApp.Interfaces
 {
     public interface ICountryRepository
     {
-        ICollection<Country> GetCountries();
-        Country GetCountry(int id);
-        Country GetCountryByOwner(int ownerId);
-        ICollection<Owner> GetOwnersFromACountry(int countryId);
-        bool CountryExists(int id);
-        bool CreateCountry(Country country);
-        bool UpdateCountry(Country country);
-        bool DeleteCountry(Country country);
-        bool Save();
+        Task<ICollection<Country>> GetCountriesAsync();
+        Task<Country> GetCountryAsync(int id);
+        Task<Country> GetCountryByOwnerAsync(int ownerId);
+        Task<ICollection<Owner>> GetOwnersFromACountryAsync(int countryId);
+        Task<bool> CountryExistsAsync(int id);
+        Task<bool> CreateCountryAsync(Country country);
+        Task<bool> UpdateCountryAsync(Country country);
+        Task<bool> DeleteCountryAsync(Country country);
+        Task<bool> SaveAsync();
     }
 }
