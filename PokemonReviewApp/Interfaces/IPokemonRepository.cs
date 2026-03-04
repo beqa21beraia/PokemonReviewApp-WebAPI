@@ -1,17 +1,19 @@
-﻿using PokemonReviewApp.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using PokemonReviewApp.Models;
 
 namespace PokemonReviewApp.Interfaces
 {
     public interface IPokemonRepository
     {
-        ICollection<Pokemon> GetPokemons();
-        Pokemon GetPokemon(int id);
-        Pokemon GetPokemon(string name);
-        decimal GetPokemonRating(int pokeId);
-        bool PokemonExists(int pokeId); 
-        bool CreatePokemon(int ownerId, int categoryId, Pokemon pokemon);
-        bool UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon);
-        bool DeletePokemon(Pokemon pokemon);
-        bool Save();
+        Task<ICollection<Pokemon>> GetPokemonsAsync();
+        Task<Pokemon> GetPokemonAsync(int id);
+        Task<Pokemon> GetPokemonAsync(string name);
+        Task<decimal> GetPokemonRatingAsync(int pokeId);
+        Task<bool> PokemonExistsAsync(int pokeId);
+        Task<bool> CreatePokemonAsync(int ownerId, int categoryId, Pokemon pokemon);
+        Task<bool> UpdatePokemonAsync(int ownerId, int categoryId, Pokemon pokemon);
+        Task<bool> DeletePokemonAsync(Pokemon pokemon);
+        Task<bool> SaveAsync();
     }
 }

@@ -1,4 +1,8 @@
-﻿using PokemonReviewApp.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using PokemonReviewApp.Data;
 using PokemonReviewApp.Interfaces;
 using PokemonReviewApp.Models;
 
@@ -13,54 +17,61 @@ namespace PokemonReviewApp.Repository
             _dataContext = dataContext;
         }
 
-        public bool CreateReview(Review review)
+        public async Task<bool> CreateReviewAsync(Review review)
         {
-            _dataContext.Add(review);
-            return Save();
+            await _dataContext.AddAsync(review);
+            return await SaveAsync();
         }
 
-        public bool DeleteReview(Review review)
+        public async Task<bool> DeleteReviewAsync(Review review)
         {
             _dataContext.Remove(review);
-            return Save();
+            return await SaveAsync();
         }
 
-        public bool DeleteReviews(List<Review> reviews)
+        public async Task<bool> DeleteReviewsAsync(List<Review> reviews)
         {
             _dataContext.RemoveRange(reviews);
-            return Save();
+            return await SaveAsync();
         }
 
-        public Review GetReview(int reviewId)
+        public async Task<Review?> GetReviewAsync(int reviewId)
         {
-            return _dataContext.Reviews.Where(r => r.Id == reviewId).FirstOrDefault();
+            return await _dataContext.Reviews
+                .Where(r => r.Id == reviewId)
+                .FirstOrDefaultAsync();
         }
 
-        public ICollection<Review> GetReviews()
+        public async Task<ICollection<Review>> GetReviewsAsync()
         {
-            return _dataContext.Reviews.OrderBy(r => r.Id).ToList();
+            return await _dataContext.Reviews
+                .OrderBy(r => r.Id)
+                .ToListAsync();
         }
 
-        public ICollection<Review> GetReviewsOfAPokemon(int pokemonId)
+        public async Task<ICollection<Review>> GetReviewsOfAPokemonAsync(int pokemonId)
         {
-            return _dataContext.Reviews.Where(r => r.Pokemon.Id == pokemonId).ToList();
+            return await _dataContext.Reviews
+                .Where(r => r.Pokemon.Id == pokemonId)
+                .ToListAsync();
         }
 
-        public bool ReviewExists(int reviewId)
+        public async Task<bool> ReviewExistsAsync(int reviewId)
         {
-            return _dataContext.Reviews.Any(r => r.Id == reviewId);
+            return await _dataContext.Reviews
+                .AnyAsync(r => r.Id == reviewId);
         }
 
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            var saved = _dataContext.SaveChanges();
-            return saved > 0 ? true : false;
+            var saved = await _dataContext.SaveChangesAsync();
+            return saved > 0;
         }
 
-        public bool UpdateReview(Review review)
+        public async Task<bool> UpdateReviewAsync(Review review)
         {
             _dataContext.Update(review);
-            return Save();
+            return await SaveAsync();
         }
     }
 }

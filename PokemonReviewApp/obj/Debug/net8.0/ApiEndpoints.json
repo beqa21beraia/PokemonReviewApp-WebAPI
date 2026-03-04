@@ -631,7 +631,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.PokemonController",
-    "Method": "GetPokemon",
+    "Method": "GetPokemonAsync",
     "RelativePath": "api/Pokemon/{pokeId}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -666,7 +666,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.PokemonController",
-    "Method": "GetPokemonRating",
+    "Method": "GetPokemonRatingAsync",
     "RelativePath": "api/Pokemon/{pokeId}/rating",
     "HttpMethod": "GET",
     "IsController": true,
@@ -701,7 +701,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.PokemonController",
-    "Method": "UpdatePokemon",
+    "Method": "UpdatePokemonAsync",
     "RelativePath": "api/Pokemon/{pokemonId}",
     "HttpMethod": "PUT",
     "IsController": true,
@@ -756,7 +756,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.PokemonController",
-    "Method": "DeletePokemon",
+    "Method": "DeletePokemonAsync",
     "RelativePath": "api/Pokemon/{pokemonId}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -857,7 +857,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewController",
-    "Method": "GetReview",
+    "Method": "GetReviewAsync",
     "RelativePath": "api/Review/{reviewId}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -892,7 +892,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewController",
-    "Method": "UpdateReview",
+    "Method": "UpdateReviewAsync",
     "RelativePath": "api/Review/{reviewId}",
     "HttpMethod": "PUT",
     "IsController": true,
@@ -937,7 +937,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewController",
-    "Method": "DeleteReview",
+    "Method": "DeleteReviewAsync",
     "RelativePath": "api/Review/{reviewId}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -977,7 +977,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewController",
-    "Method": "GetReviewsForAPokemon",
+    "Method": "GetReviewsForAPokemonAsync",
     "RelativePath": "api/Review/pokemon/{pokemonId}",
     "HttpMethod": "GET",
     "IsController": true,

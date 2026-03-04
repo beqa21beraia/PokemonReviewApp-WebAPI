@@ -1,4 +1,8 @@
-﻿using PokemonReviewApp.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using PokemonReviewApp.Data;
 using PokemonReviewApp.Interfaces;
 using PokemonReviewApp.Models;
 
@@ -12,77 +16,90 @@ namespace PokemonReviewApp.Repository
             _dataContext = dataContext;
         }
 
-        public bool CreatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+        public async Task<bool> CreatePokemonAsync(int ownerId, 
+            int categoryId, Pokemon pokemon)
         {
-            var pokemonOwner = _dataContext.Owners
-                .Where(o => o.Id == ownerId).FirstOrDefault();
-            var pokemonCategory = _dataContext.Categories
-                .Where(c => c.Id == categoryId).FirstOrDefault();
+            var pokemonOwner = await _dataContext.Owners
+                .Where(o => o.Id == ownerId)
+                .FirstOrDefaultAsync();
+
+            var pokemonCategory = await _dataContext.Categories
+                .Where(c => c.Id == categoryId)
+                .FirstOrDefaultAsync();
 
             var pokemonOwnerEntity = new PokemonOwner
             {
                 Owner = pokemonOwner,
                 Pokemon = pokemon
             };
-            _dataContext.Add(pokemonOwnerEntity);
+            await _dataContext.AddAsync(pokemonOwnerEntity);
 
             var pokemonCategoryEntity = new PokemonCategory
             {
                 Category = pokemonCategory,
                 Pokemon = pokemon
             };
-            _dataContext.Add(pokemonCategoryEntity);
+            await _dataContext.AddAsync(pokemonCategoryEntity);
 
-            _dataContext.Add(pokemon);
+            await _dataContext.AddAsync(pokemon);
 
-            return Save();
+            return await SaveAsync();
         }
 
-        public bool DeletePokemon(Pokemon pokemon)
+        public async Task<bool> DeletePokemonAsync(Pokemon pokemon)
         {
             _dataContext.Remove(pokemon);
-            return Save();
+            return await SaveAsync();
         }
 
-        public Pokemon GetPokemon(int id)
+        public async Task<Pokemon> GetPokemonAsync(int id)
         {
-            return _dataContext.Pokemon.Where(p => p.Id == id).FirstOrDefault();
+            return await _dataContext.Pokemon
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
         }
 
-        public Pokemon GetPokemon(string name)
+        public async Task<Pokemon> GetPokemonAsync(string name)
         {
-            return _dataContext.Pokemon.Where(p => p.Name == name).FirstOrDefault();
+            return await _dataContext.Pokemon
+                .Where(p => p.Name == name)
+                .FirstOrDefaultAsync();
         }
 
-        public decimal GetPokemonRating(int pokeId)
+        public async Task<decimal> GetPokemonRatingAsync(int pokeId)
         {
-            var review = _dataContext.Reviews.Where(p => p.Pokemon.Id ==  pokeId);
-            if (review.Count() <= 0)
+            var reviews = _dataContext.Reviews.Where(p => p.Pokemon.Id == pokeId);
+
+            var count = await reviews.CountAsync();
+            if (count <= 0)
                 return 0;
-            return (decimal)review.Sum(r =>  r.Rating) / review.Count();
+
+            var sum = await reviews.SumAsync(r => r.Rating);
+            return (decimal)sum / count;
         }
 
-
-        public ICollection<Pokemon> GetPokemons()
+        public async Task<ICollection<Pokemon>> GetPokemonsAsync()
         {
-            return _dataContext.Pokemon.OrderBy(p => p.Id).ToList();
+            return await _dataContext.Pokemon
+                .OrderBy(p => p.Id)
+                .ToListAsync();
         }
 
-        public bool PokemonExists(int pokeId)
+        public async Task<bool> PokemonExistsAsync(int pokeId)
         {
-            return _dataContext.Pokemon.Any(p => p.Id == pokeId);
+            return await _dataContext.Pokemon.AnyAsync(p => p.Id == pokeId);
         }
 
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            var saved = _dataContext.SaveChanges();
-            return saved > 0 ? true : false;
+            var saved = await _dataContext.SaveChangesAsync();
+            return saved > 0;
         }
 
-        public bool UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+        public async Task<bool> UpdatePokemonAsync(int ownerId, int categoryId, Pokemon pokemon)
         {
             _dataContext.Update(pokemon);
-            return Save();
+            return await SaveAsync();
         }
     }
 }

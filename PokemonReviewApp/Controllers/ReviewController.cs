@@ -5,6 +5,7 @@ using PokemonReviewApp.DTO;
 using PokemonReviewApp.Interfaces;
 using PokemonReviewApp.Models;
 using PokemonReviewApp.Repository;
+using System.Threading.Tasks;
 
 namespace PokemonReviewApp.Controllers
 {
@@ -30,64 +31,69 @@ namespace PokemonReviewApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Owner>))]
-        public IActionResult GetReviews()
+        public async Task<IActionResult> GetReviews()
         {
-            var reviews = _mapper.Map<List<ReviewDto>>(
-                _reviewRepository.GetReviews());
+            var reviews = await _reviewRepository.GetReviewsAsync();
+
+            var reviewsDto = _mapper.Map<List<ReviewDto>>(reviews);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(reviews);
+            return Ok(reviewsDto);
         }
 
         [HttpGet("{reviewId}")]
         [ProducesResponseType(200, Type = typeof(Review))]
         [ProducesResponseType(400)]
-        public IActionResult GetReview(int reviewId)
+        public async Task<IActionResult> GetReviewAsync(int reviewId)
         {
-            if (!_reviewRepository.ReviewExists(reviewId))
+            if (!await _reviewRepository.ReviewExistsAsync(reviewId))
                 return NotFound();
 
-            var review = _mapper.Map<ReviewDto>(
-                _reviewRepository.GetReview(reviewId));
+            var review = await _reviewRepository.GetReviewAsync(reviewId);
+
+            var reviewDto = _mapper.Map<ReviewDto>(review);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(review);
+            return Ok(reviewDto);
         }
 
         [HttpGet("pokemon/{pokemonId}")]
         [ProducesResponseType(200, Type = typeof(Review))]
         [ProducesResponseType(400)]
-        public IActionResult GetReviewsForAPokemon(int pokemonId)
+        public async Task<IActionResult> GetReviewsForAPokemonAsync(int pokemonId)
         {
-            var reviews = _mapper.Map<List<ReviewDto>>(
-                _reviewRepository.GetReviewsOfAPokemon(pokemonId));
+            var reviews = await _reviewRepository.GetReviewsOfAPokemonAsync(pokemonId);
+
+            var reviewsDto = _mapper.Map<List<ReviewDto>>(reviews);
 
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            return Ok(reviews);
+            return Ok(reviewsDto);
         }
 
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateReview([FromQuery] int reviewerId,
+        public async Task<IActionResult> CreateReview([FromQuery] int reviewerId,
             [FromQuery] int pokemonId, 
             [FromBody] ReviewDto newReview)
         {
             if (newReview == null)
                 return BadRequest(ModelState);
 
-            var review = _reviewRepository.GetReviews()
+            var reviews = await _reviewRepository.GetReviewsAsync();
+
+            var existingReview = reviews
                 .Where(c => c.Title.Trim().ToUpper()
                 == newReview.Title.Trim().ToUpper())
                 .FirstOrDefault();
 
-            if (review != null)
+            if (existingReview != null)
             {
                 ModelState.AddModelError("", "Review already exists");
                 return StatusCode(422, ModelState);
@@ -98,10 +104,12 @@ namespace PokemonReviewApp.Controllers
 
             var newReviewMap = _mapper.Map<Review>(newReview);
 
-            newReviewMap.Reviewer = _reviewerRepository.GetReviewer(reviewerId);
-            newReviewMap.Pokemon = _pokemonRepository.GetPokemon(pokemonId);
+            newReviewMap.Reviewer = await _reviewerRepository.GetReviewerAsync(reviewerId);
+            newReviewMap.Pokemon = await _pokemonRepository.GetPokemonAsync(pokemonId);
 
-            if (!_reviewRepository.CreateReview(newReviewMap))
+            var created = await _reviewRepository.CreateReviewAsync(newReviewMap);
+
+            if (!created)
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
@@ -114,7 +122,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateReview(int reviewId,
+        public async Task<IActionResult> UpdateReviewAsync(int reviewId,
             [FromBody] ReviewDto updatedReview)
         {
             if (updatedReview == null)
@@ -123,7 +131,7 @@ namespace PokemonReviewApp.Controllers
             if (reviewId != updatedReview.Id)
                 return BadRequest(ModelState);
 
-            if (!_reviewRepository.ReviewExists(reviewId))
+            if (!await _reviewRepository.ReviewExistsAsync(reviewId))
                 return NotFound();
 
             if (!ModelState.IsValid)
@@ -131,7 +139,9 @@ namespace PokemonReviewApp.Controllers
 
             var reviewMap = _mapper.Map<Review>(updatedReview);
 
-            if (!_reviewRepository.UpdateReview(reviewMap))
+            var updated = await _reviewRepository.UpdateReviewAsync(reviewMap); 
+
+            if (!updated)
             {
                 ModelState.AddModelError("",
                     "Something went wrong while updating review");
@@ -145,17 +155,19 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteReview(int reviewId)
+        public async Task<IActionResult> DeleteReviewAsync(int reviewId)
         {
-            if (!_reviewRepository.ReviewExists(reviewId))
+            if (!await _reviewRepository.ReviewExistsAsync(reviewId))
                 return NotFound();
 
-            var reviewToDelete = _reviewRepository.GetReview(reviewId);
+            var reviewToDelete = await _reviewRepository.GetReviewAsync(reviewId);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_reviewRepository.DeleteReview(reviewToDelete))
+            var deleted = await _reviewRepository.DeleteReviewAsync(reviewToDelete);
+
+            if (!deleted)
             {
                 ModelState.AddModelError("",
                     "Something went wrong while deleting review");
