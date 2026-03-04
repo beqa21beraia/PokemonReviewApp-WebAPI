@@ -1,16 +1,18 @@
-﻿using PokemonReviewApp.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using PokemonReviewApp.Models;
 
 namespace PokemonReviewApp.Interfaces
 {
     public interface IReviewerRepository
     {
-        ICollection<Reviewer> GetReviewers();
-        Reviewer GetReviewer(int reviewerId);
-        ICollection<Review> GetReviewsByReviewer(int  reviewerId);
-        bool ReviewerExists(int reviewerId);
-        bool CreateReviewer(Reviewer reviewer);
-        bool UpdateReviewer(Reviewer reviewer);
-        bool DeleteReviewer(Reviewer reviewer);
-        bool Save();
+        Task<ICollection<Reviewer>> GetReviewersAsync();
+        Task<Reviewer> GetReviewerAsync(int reviewerId);
+        Task<ICollection<Review>> GetReviewsByReviewerAsync(int reviewerId);
+        Task<bool> ReviewerExistsAsync(int reviewerId);
+        Task<bool> CreateReviewerAsync(Reviewer reviewer);
+        Task<bool> UpdateReviewerAsync(Reviewer reviewer);
+        Task<bool> DeleteReviewerAsync(Reviewer reviewer);
+        Task<bool> SaveAsync();
     }
 }

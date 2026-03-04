@@ -207,7 +207,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.CountryController",
-    "Method": "GetCountries",
+    "Method": "GetCountriesAsync",
     "RelativePath": "api/Country",
     "HttpMethod": "GET",
     "IsController": true,
@@ -227,7 +227,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.CountryController",
-    "Method": "CreateCountry",
+    "Method": "CreateCountryAsync",
     "RelativePath": "api/Country",
     "HttpMethod": "POST",
     "IsController": true,
@@ -258,7 +258,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.CountryController",
-    "Method": "GetCountry",
+    "Method": "GetCountryAsync",
     "RelativePath": "api/Country/{countryId}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -293,7 +293,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.CountryController",
-    "Method": "UpdateCountry",
+    "Method": "UpdateCountryAsync",
     "RelativePath": "api/Country/{countryId}",
     "HttpMethod": "PUT",
     "IsController": true,
@@ -338,7 +338,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.CountryController",
-    "Method": "DeleteCountry",
+    "Method": "DeleteCountryAsync",
     "RelativePath": "api/Country/{countryId}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -378,7 +378,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.OwnerController",
-    "Method": "GetOwners",
+    "Method": "GetOwnersAsync",
     "RelativePath": "api/Owner",
     "HttpMethod": "GET",
     "IsController": true,
@@ -398,7 +398,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.OwnerController",
-    "Method": "CreateOwner",
+    "Method": "CreateOwnerAsync",
     "RelativePath": "api/Owner",
     "HttpMethod": "POST",
     "IsController": true,
@@ -434,7 +434,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.OwnerController",
-    "Method": "GetOwner",
+    "Method": "GetOwnerAsync",
     "RelativePath": "api/Owner/{ownerId}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -469,7 +469,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.OwnerController",
-    "Method": "UpdateOwner",
+    "Method": "UpdateOwnerAsync",
     "RelativePath": "api/Owner/{ownerId}",
     "HttpMethod": "PUT",
     "IsController": true,
@@ -514,7 +514,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.OwnerController",
-    "Method": "DeleteOwner",
+    "Method": "DeleteOwnerAsync",
     "RelativePath": "api/Owner/{ownerId}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -554,7 +554,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.OwnerController",
-    "Method": "GetPokemonByowner",
+    "Method": "GetPokemonByownerAsync",
     "RelativePath": "api/Owner/{ownerId}/pokemon",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1032,7 +1032,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewerController",
-    "Method": "CreateReviewer",
+    "Method": "CreateReviewerAsync",
     "RelativePath": "api/Reviewer",
     "HttpMethod": "POST",
     "IsController": true,
@@ -1063,7 +1063,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewerController",
-    "Method": "GetReviewer",
+    "Method": "GetReviewerAsync",
     "RelativePath": "api/Reviewer/{reviewerId}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1098,7 +1098,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewerController",
-    "Method": "UpdateReviewer",
+    "Method": "UpdateReviewerAsync",
     "RelativePath": "api/Reviewer/{reviewerId}",
     "HttpMethod": "PUT",
     "IsController": true,
@@ -1143,7 +1143,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewerController",
-    "Method": "DeleteReviewer",
+    "Method": "DeleteReviewerAsync",
     "RelativePath": "api/Reviewer/{reviewerId}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -1183,7 +1183,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.ReviewerController",
-    "Method": "GetReviewsByAReviewer",
+    "Method": "GetReviewsByAReviewerAsync",
     "RelativePath": "api/Reviewer/{reviewerId}/reviews",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1218,7 +1218,7 @@
   },
   {
     "ContainingType": "PokemonReviewApp.Controllers.CountryController",
-    "Method": "GetCountryByOwner",
+    "Method": "GetCountryByOwnerAsync",
     "RelativePath": "owners/{ownerId}",
     "HttpMethod": "GET",
     "IsController": true,
