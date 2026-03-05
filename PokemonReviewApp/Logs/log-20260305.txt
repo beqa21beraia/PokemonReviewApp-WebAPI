@@ -1,0 +1,11 @@
+2026-03-05 20:36:16.255 +04:00 [INF] HTTP GET /api/Category responded 200 in 3690.3350 ms
+2026-03-05 20:36:33.835 +04:00 [INF] HTTP GET /api/Category/3 responded 200 in 333.0333 ms
+2026-03-05 20:37:16.181 +04:00 [WRN] Category with ID 10 was not found
+2026-03-05 20:37:16.207 +04:00 [INF] HTTP GET /api/Category/10 responded 404 in 138.7728 ms
+2026-03-05 20:37:43.511 +04:00 [INF] HTTP GET /api/Owner responded 200 in 59.2779 ms
+2026-03-05 20:38:02.743 +04:00 [WRN] Pokemon with ID 121 was not found
+2026-03-05 20:38:02.745 +04:00 [INF] HTTP GET /api/Pokemon/121 responded 404 in 746.9562 ms
+2026-03-05 20:38:19.557 +04:00 [INF] HTTP GET /api/Reviewer responded 200 in 71.2119 ms
+2026-03-05 20:38:22.557 +04:00 [INF] HTTP GET /api/Reviewer responded 200 in 5.7448 ms
+2026-03-05 20:38:29.160 +04:00 [INF] HTTP GET /api/Review responded 200 in 67.5206 ms
+2026-03-05 20:38:34.299 +04:00 [INF] HTTP GET /api/Pokemon responded 200 in 70.6771 ms

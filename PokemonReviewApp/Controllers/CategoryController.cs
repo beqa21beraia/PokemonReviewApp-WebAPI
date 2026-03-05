@@ -14,11 +14,15 @@ namespace PokemonReviewApp.Controllers
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<CategoryController> _logger;
+
         public CategoryController(ICategoryRepository categoryRepository,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<CategoryController> logger)
         {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -42,7 +46,10 @@ namespace PokemonReviewApp.Controllers
         public async Task<IActionResult> GetCategoryAsync(int categoryId)
         {
             if (!await _categoryRepository.CategoryExistsAsync(categoryId))
+            {
+                _logger.LogWarning("Category with ID {categoryId} was not found", categoryId);
                 return NotFound();
+            }
 
             var category = await _categoryRepository.GetCategoryAsync(categoryId);
 
@@ -85,6 +92,7 @@ namespace PokemonReviewApp.Controllers
 
             if (existingCategory != null)
             {
+                _logger.LogWarning("Category with name {categoryName} already exists", newCategory.Name);
                 ModelState.AddModelError("", "Category already exists");
                 return StatusCode(422, ModelState);
             }
@@ -98,6 +106,7 @@ namespace PokemonReviewApp.Controllers
 
             if (!created)
             {
+                _logger.LogError("Failed to save category '{CategoryName}' to the database", newCategory.Name);
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
@@ -119,7 +128,10 @@ namespace PokemonReviewApp.Controllers
                 return BadRequest(ModelState);
 
             if (!await _categoryRepository.CategoryExistsAsync(categoryId))
+            {
+                _logger.LogWarning("Update failed — Category with ID {CategoryId} not found", categoryId);
                 return NotFound();
+            }
 
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -131,6 +143,7 @@ namespace PokemonReviewApp.Controllers
 
             if (!updated)
             {
+                _logger.LogError("Failed to update Category with ID {CategoryId}", categoryId);
                 ModelState.AddModelError("",
                     "Something went wrong while updating category");
                 return StatusCode(500, ModelState);
@@ -146,8 +159,11 @@ namespace PokemonReviewApp.Controllers
         public async Task<IActionResult> DeleteCategoryAsync(int categoryId)
         {
             if (!await _categoryRepository.CategoryExistsAsync(categoryId))
+            {
+                _logger.LogWarning("Delete failed — Category with ID {CategoryId} not found", categoryId);
                 return NotFound();
-
+            }
+    
             var categoryToDelete = await _categoryRepository
                 .GetCategoryAsync(categoryId);
 
@@ -159,11 +175,13 @@ namespace PokemonReviewApp.Controllers
 
             if (!deleted)
             {
+                _logger.LogError("Failed to delete Category with ID {CategoryId}", categoryId);
                 ModelState.AddModelError("",
                     "Something went wrong while deleting category");
                 return StatusCode(500, ModelState);
             }
 
+            _logger.LogInformation("Category with ID {CategoryId} deleted successfully", categoryId);
             return NoContent();
         }
     }

@@ -1431,7 +1431,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Owner"
+                    "$ref": "#/components/schemas/Review"
                   }
                 }
               },
@@ -1439,7 +1439,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Owner"
+                    "$ref": "#/components/schemas/Review"
                   }
                 }
               },
@@ -1447,7 +1447,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Owner"
+                    "$ref": "#/components/schemas/Review"
                   }
                 }
               }
