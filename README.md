@@ -173,7 +173,7 @@ PokemonReviewApp/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/PokemonReviewApp.git
+   git clone https://github.com/beqa21beraia/PokemonReviewApp.git
    cd PokemonReviewApp
    ```
 
